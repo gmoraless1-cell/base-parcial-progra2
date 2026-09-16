@@ -20,18 +20,19 @@ public class Citas {
 		
 		private EstadoCita estado = EstadoCita.PENDIENTE;
 		
-		public Citas(int id, String nombreCompleto, LocalDateTime fechaHora, String descripcionServicio, int minEstimados) {
+		public Citas(int id, String nombreCompleto, LocalDateTime fechaHora, String descripcionServicio, int minEstimados, EstadoCita estado) {
 		        this.id = id;
 		        this.nombreCompleto = nombreCompleto;
 		        this.fechaHora = fechaHora;
 		        this.descripcionServicio = descripcionServicio;
 		        this.minEstimados = minEstimados;
+		        this.estado = estado;
 		}
 		
 	    // Constructor de conveniencia para una cita que todavia no existe en la
 	    // BD (id = 0, MySQL le asigna el id real al insertarlo).
-	  public Citas(String nombreCompleto, LocalDateTime fechaHora, String descripcionServicio, int minEstimados) {
-	        this(0, nombreCompleto, fechaHora, descripcionServicio, minEstimados);
+	  public Citas(String nombreCompleto, LocalDateTime fechaHora, String descripcionServicio, int minEstimados, EstadoCita estado) {
+	        this(0, nombreCompleto, fechaHora, descripcionServicio, minEstimados, estado);
 	        
 	  	}
 	  public int getId() {

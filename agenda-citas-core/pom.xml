@@ -6,4 +6,11 @@
     <version>1.0.0</version>
   </parent>
   <artifactId>agenda-citas-core</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>farmenandoauraclase8</groupId>
+  		<artifactId>TAREA</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
