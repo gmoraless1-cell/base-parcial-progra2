@@ -242,7 +242,7 @@ public class Mantenimiento extends JFrame {
 		btnNewButton_1.setBounds(70, 300, 84, 20);
 		contentPane.add(btnNewButton_1);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("¿Es primera visita?");
+		chckbxNewCheckBox = new JCheckBox("¿Es primera visita?");
 		chckbxNewCheckBox.setBounds(217, 286, 202, 49);
 		contentPane.add(chckbxNewCheckBox);
 

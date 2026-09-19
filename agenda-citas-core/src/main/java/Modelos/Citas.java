@@ -9,7 +9,8 @@ public class Citas {
 			
 			PENDIENTE,
 			CONFIRMADO,
-			CANCELADO
+			CANCELADO;
+
 		}
 		
 		private int id;

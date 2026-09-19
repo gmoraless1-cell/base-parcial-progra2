@@ -161,6 +161,7 @@ public class VentanaPrincipal extends JFrame {
 					c.getDescripcionServicio(),
 					c.getMinEstimados(),
 					c.getEstado()
+					//c.isRequiereConfirmacionLlamada() ? "Si" : "No"
 				});
 			}
 		} catch (SQLException e) {
