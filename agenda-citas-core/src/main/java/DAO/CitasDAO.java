@@ -23,7 +23,7 @@ public class CitasDAO {
     
     public int crear(Citas citas) throws SQLException {
     	//omitimos el campo "ID: en el INSERT porque Workbenck lo va a general solo (AUTO_INCREMET)
-    	String sqlInsertar = "INSERT INTO citas (nombre_completo, fecha_hora_programada, descripcion_servicio, duracion_estimada_minutos, estado) VALUES (?, ?, ?, ?, ?)";
+    	String sqlInsertar = "INSERT INTO citas (nombre_completo, fecha_hora_programada, descripcion_servicio, duracion_estimada_minutos, estado, requiere_confirmacion_llamada) VALUES (?, ?, ?, ?, ?, ?)";
     	
     	//El parametro Statement.RETURN_GENERATED_KEYS le pide a Workbenk que nos devuelva el ID asignado
     	try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
@@ -46,6 +46,7 @@ public class CitasDAO {
     	stmtInsertar.setString(3, citas.getDescripcionServicio());
     	stmtInsertar.setInt(4, citas.getMinEstimados());
     	stmtInsertar.setString(5, citas.getEstado().name()); // 'Pendiente', 'confirmado', 'cancelado'
+    	stmtInsertar.setBoolean(6, citas.isRequiereConfirmacionLlamada());
     	
     	// Ejecutamos la insercion
     	int filasAfectadas = stmtInsertar.executeUpdate();
@@ -82,7 +83,9 @@ public class CitasDAO {
 	            statement.setString(3, citas.getDescripcionServicio());
 	            statement.setInt(4, citas.getMinEstimados());
 	            statement.setString(5, citas.getEstado().name());
-	            statement.setInt(6, citas.getId());
+	            statement.setBoolean(6, citas.isRequiereConfirmacionLlamada());
+	            statement.setInt(7, citas.getId());
+	            
 
 	            int filasAfectadas = statement.executeUpdate();
 	            return filasAfectadas;  // Devuelve el número de registros actualizados
@@ -104,7 +107,7 @@ public class CitasDAO {
     }
  	
  	 public List<Citas> listarTodos() throws SQLException {
-         String sql = "SELECT id, nombre_completo, fecha_hora_programada, descripcion_servicio, duracion_estimada_minutos, estado FROM citas ORDER BY id";
+         String sql = "SELECT id, nombre_completo, fecha_hora_programada, descripcion_servicio, duracion_estimada_minutos, estado, requiere_confirmacion_llamada FROM citas ORDER BY id";
          List<Citas> citas = new ArrayList<>();
 
          try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
@@ -119,7 +122,7 @@ public class CitasDAO {
      }
 	
  	public Optional<Citas> buscarPorid(int id) throws SQLException {
-        String sql = "SELECT id, nombre_completo, fecha_hora_programada, descripcion_servicio, duracion_estimada_minutos, estado FROM citas WHERE id = ?";
+        String sql = "SELECT id, nombre_completo, fecha_hora_programada, descripcion_servicio, duracion_estimada_minutos, estado, requiere_confirmacion_llamada FROM citas WHERE id = ?";
 
         try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -139,14 +142,13 @@ public class CitasDAO {
         int id = resultado.getInt("id");
         String nombreCompleto = resultado.getString("nombre_completo");
         LocalDateTime fechaHora = resultado.getTimestamp("fecha_hora_programada").toLocalDateTime();
-
         String descripcionServicio = resultado.getString("descripcion_servicio");
         int duracionMinutos = resultado.getInt("duracion_estimada_minutos");
-        
      // Leemos el String de la BD y lo convertimos al Enum correspondiente
         EstadoCita estado = EstadoCita.valueOf(resultado.getString("estado").toUpperCase());
+        boolean requiereConfirmacionLlamada = resultado.getBoolean("requiere_confirmacion_llamada");
         
-        return new Citas(id, nombreCompleto, fechaHora, descripcionServicio, duracionMinutos, estado);
+        return new Citas(id, nombreCompleto, fechaHora, descripcionServicio, duracionMinutos, estado, requiereConfirmacionLlamada);
     }
 
 }

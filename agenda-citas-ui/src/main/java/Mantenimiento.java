@@ -23,6 +23,7 @@ import java.util.Calendar;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JCheckBox;
 
 public class Mantenimiento extends JFrame {
 	
@@ -38,7 +39,7 @@ public class Mantenimiento extends JFrame {
 	private VentanaPrincipal ventanaPrincipal;
 	private Citas citaEnEdicion;
 	private JButton btnNewButton_1;
-	
+	private JCheckBox chckbxNewCheckBox;
 
 	/**
 	 * Launch the application.
@@ -104,7 +105,7 @@ public class Mantenimiento extends JFrame {
 
 			if (citaEnEdicion == null) {
 				// ---- MODO CREAR ----
-				Citas nuevaCita = new Citas(nombre, fechaHora, descripcion, duracion, Citas.EstadoCita.PENDIENTE);
+				Citas nuevaCita = new Citas(nombre, fechaHora, descripcion, duracion, Citas.EstadoCita.PENDIENTE, chckbxNewCheckBox.isSelected());
 				int idGenerado = dao.crear(nuevaCita);
 
 				if (idGenerado > 0) {
@@ -121,6 +122,7 @@ public class Mantenimiento extends JFrame {
 				citaEnEdicion.setDescripcion_servicio(descripcion);
 				citaEnEdicion.setMinutos_estimados(duracion);
 				citaEnEdicion.setEstado(estadoSeleccionado);
+				citaEnEdicion.setRequiereConfirmacionLlamada(chckbxNewCheckBox.isSelected());
 
 				int filasAfectadas = dao.actualizarCitas(citaEnEdicion);
 
@@ -239,6 +241,10 @@ public class Mantenimiento extends JFrame {
 		});
 		btnNewButton_1.setBounds(70, 300, 84, 20);
 		contentPane.add(btnNewButton_1);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("¿Es primera visita?");
+		chckbxNewCheckBox.setBounds(217, 286, 202, 49);
+		contentPane.add(chckbxNewCheckBox);
 
 	}
 	
@@ -263,6 +269,7 @@ public class Mantenimiento extends JFrame {
 		spinner.setValue(fecha);
 
 		comboBox.setSelectedItem(citaExistente.getEstado());
+		chckbxNewCheckBox.setSelected(citaExistente.isRequiereConfirmacionLlamada());
 		comboBox.setEnabled(true);
 
 		setTitle("Editar cita");

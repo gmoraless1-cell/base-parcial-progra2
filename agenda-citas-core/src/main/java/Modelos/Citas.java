@@ -17,22 +17,24 @@ public class Citas {
 		private LocalDateTime fechaHora;
 		private String descripcionServicio;
 		private int minEstimados;
+		private boolean requiereConfirmacionLlamada;
 		
 		private EstadoCita estado = EstadoCita.PENDIENTE;
 		
-		public Citas(int id, String nombreCompleto, LocalDateTime fechaHora, String descripcionServicio, int minEstimados, EstadoCita estado) {
+		public Citas(int id, String nombreCompleto, LocalDateTime fechaHora, String descripcionServicio, int minEstimados, EstadoCita estado, boolean requiereConfirmacionLlamada) {
 		        this.id = id;
 		        this.nombreCompleto = nombreCompleto;
 		        this.fechaHora = fechaHora;
 		        this.descripcionServicio = descripcionServicio;
 		        this.minEstimados = minEstimados;
 		        this.estado = estado;
+		        this.requiereConfirmacionLlamada = requiereConfirmacionLlamada;
 		}
 		
 	    // Constructor de conveniencia para una cita que todavia no existe en la
 	    // BD (id = 0, MySQL le asigna el id real al insertarlo).
-	  public Citas(String nombreCompleto, LocalDateTime fechaHora, String descripcionServicio, int minEstimados, EstadoCita estado) {
-	        this(0, nombreCompleto, fechaHora, descripcionServicio, minEstimados, estado);
+	  public Citas(String nombreCompleto, LocalDateTime fechaHora, String descripcionServicio, int minEstimados, EstadoCita estado, boolean requiereConfirmacionLlamada) {
+	        this(0, nombreCompleto, fechaHora, descripcionServicio, minEstimados, estado, requiereConfirmacionLlamada);
 	        
 	  	}
 	  public int getId() {
@@ -65,6 +67,9 @@ public class Citas {
 		public void setMinutos_estimados(int minEstimados) {
 			this.minEstimados = minEstimados;
 		}
+		public void getRequiereConfirmacionLlamada(boolean requiereConfirmacionLlamada) {
+			this.requiereConfirmacionLlamada = requiereConfirmacionLlamada;
+		}
 		
 		@Override
 		public String toString() {
@@ -74,8 +79,9 @@ public class Citas {
 		    // %-30s -> Descripcion (30 espacios)
 			// %d min -> Duracion en minutos.
 		    // %s     -> Estado de la cita.
+			// %s     -> Confirmacion
 		    return String.format("[%3d] %-50s | %-10s | %-30s | %d min | Estado: %s", 
-		                         id, nombreCompleto, fechaHora, descripcionServicio, minEstimados, estado);
+		                         id, nombreCompleto, fechaHora, descripcionServicio, minEstimados, estado, requiereConfirmacionLlamada);
 		}
 
 		public EstadoCita getEstado() {
@@ -85,5 +91,14 @@ public class Citas {
 		public void setEstado(EstadoCita estado) {
 			this.estado = estado;
 		}
+		
+		public boolean isRequiereConfirmacionLlamada() {
+			return requiereConfirmacionLlamada;
+		}
+
+		public void setRequiereConfirmacionLlamada(boolean requiereConfirmacionLlamada) {
+			this.requiereConfirmacionLlamada = requiereConfirmacionLlamada;
+		}
+
 
 }
